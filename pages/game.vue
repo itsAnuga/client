@@ -16,7 +16,7 @@
 </template>
 <script>
 export default {
-  layout: 'testing',
+  layout: 'game',
   // methods: {
   //   // send(message) {
   //   //   this.ws.send(message);

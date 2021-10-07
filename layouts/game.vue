@@ -1,12 +1,38 @@
 <template>
   <v-app dark>
-    <!-- :clipped="clipped" -->
-    <v-navigation-drawer v-model="drawer" :right="right" fixed app width="25%">
+    <v-navigation-drawer
+      v-model="drawer"
+      :clipped="clipped"
+      app
+      fixed
+      disable-resize-watcher
+      disable-route-watcher
+      mobile-breakpoint="0"
+    >
       <v-list>
-        <v-list-item v-for="player in list" :key="player.uuid" router exact>
-          <!-- <v-list-item-action>
+        <v-list-item
+          v-for="(item, i) in items"
+          :key="i"
+          :href="item.to"
+          exact
+          nuxt
+        >
+          <v-list-item-action>
             <v-icon>{{ item.icon }}</v-icon>
-          </v-list-item-action> -->
+          </v-list-item-action>
+          <v-list-item-content>
+            <v-list-item-title v-text="item.title" />
+          </v-list-item-content>
+        </v-list-item>
+      </v-list>
+      <v-list>
+        <v-list-item
+          v-for="player in list"
+          :key="player.uuid"
+          dense
+          exact
+          shaped
+        >
           <v-list-item-content>
             <v-list-item-title v-text="player.name" />
             <v-list-item-subtitle v-text="player.uuid" />
@@ -14,29 +40,14 @@
         </v-list-item>
       </v-list>
     </v-navigation-drawer>
-    <v-app-bar fixed app>
+    <v-app-bar :clipped-left="clipped" app fixed>
       <v-toolbar-title v-text="title" />
-      <v-spacer />
-      <v-app-bar-nav-icon @click.stop="drawer = !drawer" />
-      <!-- <v-btn icon @click.stop="rightDrawer = !rightDrawer">
-        <v-icon>mdi-menu</v-icon>
-      </v-btn> -->
     </v-app-bar>
     <v-main>
       <v-container>
         <Nuxt />
       </v-container>
     </v-main>
-    <v-navigation-drawer v-model="rightDrawer" :right="right" temporary fixed>
-      <v-list>
-        <v-list-item @click.native="right = !right">
-          <v-list-item-action>
-            <v-icon light> mdi-repeat </v-icon>
-          </v-list-item-action>
-          <v-list-item-title>Switch drawer (click me)</v-list-item-title>
-        </v-list-item>
-      </v-list>
-    </v-navigation-drawer>
     <v-footer :absolute="!fixed" app>
       <span>&copy; {{ new Date().getFullYear() }}</span>
     </v-footer>
@@ -47,8 +58,8 @@
 export default {
   data() {
     return {
-      clipped: false,
-      drawer: false,
+      clipped: true,
+      drawer: true,
       fixed: false,
       items: [
         {
@@ -61,11 +72,15 @@ export default {
           title: 'Inspire',
           to: '/inspire',
         },
+        {
+          icon: 'mdi-microsoft-xbox-controller',
+          title: 'Game',
+        },
       ],
       playerlist: {},
       right: true,
       rightDrawer: false,
-      title: 'Vuetify.js',
+      title: `The Game`,
     };
   },
   computed: {
