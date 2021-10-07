@@ -34,7 +34,12 @@
           shaped
         >
           <v-list-item-content>
-            <v-list-item-title>{{ player.name }}<span v-if="uuid() === player.uuid"> - you</span></v-list-item-title>
+            <v-list-item-title
+              >{{ player.name
+              }}<span v-if="uuid() === player.uuid">
+                - you</span
+              ></v-list-item-title
+            >
             <v-list-item-subtitle>{{ player.uuid }}</v-list-item-subtitle>
           </v-list-item-content>
         </v-list-item>
@@ -51,6 +56,7 @@
     <v-footer app height="120" inset>
       <v-text-field
         :rules="rules"
+        autofocus
         clearable
         dense
         hide-details="auto"
@@ -109,10 +115,10 @@ export default {
     },
   },
   beforeMount() {
-    setInterval(() => {
-      // eslint-disable-next-line no-console
-      // console.clear()
-    }, 10000);
+    // setInterval(() => {
+    //   // eslint-disable-next-line no-console
+    //   // console.clear()
+    // }, 10000);
 
     this.ws = new WebSocket(process.env.WS);
 
@@ -135,6 +141,14 @@ export default {
           } else {
             this.cookie(`uuid`, message.data.uuid);
           }
+          this.$store.commit('player', message.data.player);
+          break;
+
+        case `Word`:
+          this.message({
+            message: message.data.message,
+            player: message.data.player,
+          });
           break;
       }
     };
@@ -163,13 +177,15 @@ export default {
       document.cookie = `${name}=${value};expires=${expires};`;
     },
     message(message) {
-      console.info(message);
-
-      this.$store.commit('add', message.target.value);
-
-      this.ws.send(JSON.stringify({ data: message, type: 'word' }));
-
-      message.target.value = '';
+      if (message.target !== undefined) {
+        this.$store.commit('add', {message: message.target.value, player: this.$store.state.player });
+        this.ws.send(
+          JSON.stringify({ data: message.target.value, type: 'word' })
+        );
+        message.target.value = '';
+      } else {
+        this.$store.commit('add', {message: message.message, player: message.player });
+      }
     },
     uuid() {
       if (
