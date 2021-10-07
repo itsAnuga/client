@@ -127,9 +127,6 @@ export default {
     this.ws.onmessage = (event) => {
       const message = JSON.parse(event.data);
 
-      // eslint-disable-next-line no-console
-      console.log(message);
-
       switch (message.type) {
         case `PlayerList`:
           this.players = message.data;
