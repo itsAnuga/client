@@ -135,6 +135,9 @@ export default {
           this.players = message.data;
           break;
 
+        case `Loser`:
+          break;
+
         case `UserInfo`:
           if (this.uuid() !== null) {
             this.ws.send(JSON.stringify({ data: this.uuid(), type: 'uuid' }));
@@ -149,6 +152,9 @@ export default {
             message: message.data.message,
             player: message.data.player,
           });
+          break;
+
+        case `Victory`:
           break;
       }
     };
@@ -178,13 +184,19 @@ export default {
     },
     message(message) {
       if (message.target !== undefined) {
-        this.$store.commit('add', {message: message.target.value, player: this.$store.state.player });
+        this.$store.commit('add', {
+          message: message.target.value,
+          player: this.$store.state.player,
+        });
         this.ws.send(
           JSON.stringify({ data: message.target.value, type: 'word' })
         );
         message.target.value = '';
       } else {
-        this.$store.commit('add', {message: message.message, player: message.player });
+        this.$store.commit('add', {
+          message: message.message,
+          player: message.player,
+        });
       }
     },
     uuid() {
