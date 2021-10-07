@@ -122,7 +122,7 @@ export default {
 
     this.ws = new WebSocket(process.env.WS);
 
-    this.ws.addEventListener('open', (event) => {});
+    // this.ws.addEventListener('open', (event) => {});
 
     this.ws.onmessage = (event) => {
       const message = JSON.parse(event.data);
