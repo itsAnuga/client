@@ -133,6 +133,11 @@ export default {
           break;
 
         case `Loser`:
+          this.$store.commit('add', message.data.message);
+          break;
+
+        case `Lost`:
+          this.$store.commit('add', message.data.message);
           break;
 
         case `UserInfo`:
