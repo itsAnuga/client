@@ -1,19 +1,8 @@
 <template>
   <v-app dark>
-    <v-navigation-drawer
-      v-model="drawer"
-      :clipped="clipped"
-      app
-      fixed
-    >
+    <v-navigation-drawer v-model="drawer" :clipped="clipped" app fixed>
       <v-list>
-        <v-list-item
-          v-for="(item, i) in items"
-          :key="i"
-          :href="item.to"
-          exact
-          nuxt
-        >
+        <v-list-item v-for="(item, i) in items" :key="i" :href="item.to" exact nuxt>
           <v-list-item-action>
             <v-icon>{{ item.icon }}</v-icon>
           </v-list-item-action>
@@ -23,22 +12,15 @@
         </v-list-item>
       </v-list>
     </v-navigation-drawer>
-    <v-app-bar
-      :clipped-left="clipped"
-      app
-      fixed
-    >
-      <v-toolbar-title v-text="title" />
+    <v-app-bar :clipped-left="clipped" app fixed>
+      <v-app-bar-nav-icon @click="drawer = !drawer"></v-app-bar-nav-icon> <v-toolbar-title v-text="title" />
     </v-app-bar>
     <v-main>
-      <v-container>
+      <v-container fluid>
         <Nuxt />
       </v-container>
     </v-main>
-    <v-footer
-      :absolute="!fixed"
-      app
-    >
+    <v-footer :absolute="!fixed" app>
       <span>&copy; {{ new Date().getFullYear() }}</span>
     </v-footer>
   </v-app>
@@ -46,7 +28,7 @@
 
 <script>
 export default {
-  data () {
+  data() {
     return {
       clipped: true,
       drawer: true,
@@ -55,23 +37,21 @@ export default {
         {
           icon: 'mdi-apps',
           title: 'Welcome',
-          to: '/'
+          to: '/',
         },
         {
           icon: 'mdi-chart-bubble',
-          title: 'Inspire',
-          to: '/inspire'
+          title: 'Rules',
+          to: '/rules',
         },
         {
           icon: 'mdi-microsoft-xbox-controller',
           title: 'Game',
-          to: '/game'
-        }
+          to: '/game',
+        },
       ],
-      right: true,
-      rightDrawer: false,
-      title: `The Game`
-    }
-  }
-}
+      title: `The Game`,
+    };
+  },
+};
 </script>

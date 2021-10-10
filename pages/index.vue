@@ -1,75 +1,31 @@
 <template>
-  <v-row justify="center" align="center">
-    <v-col cols="12" sm="8" md="6">
-      <v-card class="logo py-4 d-flex justify-center">
-        <NuxtLogo />
-        <VuetifyLogo />
-      </v-card>
-      <v-card>
-        <v-card-title class="headline">
-          Welcome to the Vuetify + Nuxt.js template
-        </v-card-title>
+  <v-row>
+    <v-col>
+      <v-card width="100%">
+        <v-card-title class="headline"> Welcome to the Game </v-card-title>
+        <v-card-subtitle>Shiritori</v-card-subtitle>
         <v-card-text>
-          <p>Vuetify is a progressive Material Design component framework for Vue.js. It was designed to empower developers to create amazing applications.</p>
+          <p><a href="https://en.wikipedia.org/wiki/Shiritori">Shiritori @ Wikipedia</a></p>
           <p>
-            For more information on Vuetify, check out the <a
-              href="https://vuetifyjs.com"
-              target="_blank"
-              rel="noopener noreferrer"
-            >
-              documentation
-            </a>.
+            Shiritori (しりとり) is a Japanese word game in which the players are required to say a word which begins
+            with the final kana of the previous word. No distinction is made between hiragana, katakana or kanji.
+            "Shiritori" literally means "taking the end" or "taking the rear".
+          </p>
+          <p>English shiritori</p>
+          <p>
+            A Shiritori game using only English words was invented to help people learn English. Most rules are the
+            same, yet there are several original and optional rules that are used.
           </p>
           <p>
-            If you have questions, please join the official <a
-              href="https://chat.vuetifyjs.com/"
-              target="_blank"
-              rel="noopener noreferrer"
-              title="chat"
-            >
-              discord
-            </a>.
+            For students of English, any words including nouns, verbs, and adjectives can be used. Players cannot use
+            different tenses of previously used verbs unless they have nonstandard conjugation. For example, a player
+            may use "be," "was," and "is," but not both "kick" and "kicked." When a word ends in a silent vowel, like
+            "life," one may either use the vowel in another word or use the preceding consonant instead.
           </p>
-          <p>
-            Find a bug? Report it on the github <a
-              href="https://github.com/vuetifyjs/vuetify/issues"
-              target="_blank"
-              rel="noopener noreferrer"
-              title="contribute"
-            >
-              issue board
-            </a>.
-          </p>
-          <p>Thank you for developing with Vuetify and I look forward to bringing more exciting features in the future.</p>
-          <div class="text-xs-right">
-            <em><small>&mdash; John Leider</small></em>
-          </div>
-          <hr class="my-3">
-          <a
-            href="https://nuxtjs.org/"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            Nuxt Documentation
-          </a>
-          <br>
-          <a
-            href="https://github.com/nuxt/nuxt.js"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            Nuxt GitHub
-          </a>
         </v-card-text>
         <v-card-actions>
           <v-spacer />
-          <v-btn
-            color="primary"
-            nuxt
-            to="/inspire"
-          >
-            Continue
-          </v-btn>
+          <v-btn color="primary" nuxt to="/rules">Rules</v-btn>
         </v-card-actions>
       </v-card>
     </v-col>
