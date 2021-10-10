@@ -115,14 +115,15 @@ export default {
     },
   },
   beforeMount() {
-    // setInterval(() => {
-    //   // eslint-disable-next-line no-console
-    //   // console.clear()
-    // }, 10000);
-
     this.ws = new WebSocket(process.env.WS);
 
     // this.ws.addEventListener('open', (event) => {});
+
+    this.ws.addEventListener('open', () => {
+      this.ws.send(
+        JSON.stringify({ data: { uuid: this.uuid() }, type: 'register' })
+      );
+    });
 
     this.ws.onmessage = (event) => {
       const message = JSON.parse(event.data);
@@ -138,14 +139,17 @@ export default {
 
         case `Lost`:
           this.$store.commit('add', message.data.message);
+          this.$store.commit('player', null);
+          this.$store.commit('players', []);
+          this.$store.commit('uuid', null);
+          this.cookie(`uuid`, ``);
           break;
 
         case `UserInfo`:
-          if (this.uuid() !== null) {
-            this.ws.send(JSON.stringify({ data: this.uuid(), type: 'uuid' }));
-          } else {
+          if (this.uuid() === null) {
             this.cookie(`uuid`, message.data.uuid);
           }
+          this.$store.commit('uuid', message.data.uuid);
           this.$store.commit('player', message.data.player);
           break;
 
