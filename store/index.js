@@ -2,6 +2,7 @@ export const state = () => ({
   player: null,
   players: [],
   messages: [],
+  uuid: null,
 });
 
 export const mutations = {
@@ -13,5 +14,8 @@ export const mutations = {
   },
   players(state, players) {
     state.players = players;
+  },
+  uuid(state, uuid) {
+    state.uuid = uuid;
   },
 };
