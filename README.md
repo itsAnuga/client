@@ -1,5 +1,16 @@
 # client
 
+## Create environment file
+```bash
+# create a .env file
+$ touch .env
+
+# add a .env key, `WS=`
+$ nano .env
+
+  `WS=ws://localhost:1337`
+```
+
 ## Build Setup
 
 ```bash
@@ -12,11 +23,26 @@ $ npm run dev
 # build for production and launch server
 $ npm run build
 $ npm run start
-
-# generate static project
-$ npm run generate
 ```
 
+## The Game
+
+The Client contain three "pages".
+
+* Welcome information about the game.
+* Rules about the game. (Not strict in this version, but some implemented)
+* The Game itself.
+
+### How to play?
+
+* Simply clone the [server](https://github.com/itsAnuga/server/) and set it up accordingly.
+* Then clone the client and set it up accordingly.
+* Start a game by entering `Game`.
+
+Play by yourself, but that's no fun, so invite others to join.
+The starts when `Player 1` enters a word and sends it.
+
+## For details about Nuxt.js / Vue.js
 For detailed explanation on how things work, check out the [documentation](https://nuxtjs.org).
 
 ## Special Directories
@@ -67,3 +93,5 @@ More information about the usage of this directory in [the documentation](https:
 This directory contains your Vuex store files. Creating a file in this directory automatically activates Vuex.
 
 More information about the usage of this directory in [the documentation](https://nuxtjs.org/docs/2.x/directory-structure/store).
+
+##
