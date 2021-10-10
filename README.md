@@ -1,4 +1,9 @@
-# client
+# The Client - The Game
+
+## Requirements
+
+- OS: Linux, macOS, Windows
+- node.js >= 14.x
 
 ## Create environment file
 ```bash
