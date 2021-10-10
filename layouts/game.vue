@@ -49,26 +49,31 @@
       <v-toolbar-title v-text="title" />
     </v-app-bar>
     <v-main>
-      <v-container>
+      <v-container fluid>
         <Nuxt />
       </v-container>
     </v-main>
     <v-footer app height="120" inset>
-      <v-text-field
-        :rules="rules"
-        autofocus
-        clearable
-        dense
-        hide-details="auto"
-        hint="Psst! match the beginning with the end."
-        label="Send a Word"
-        @keyup.enter.prevent="message"
-      >
-        <template #append-outer>
-          <v-btn>Send</v-btn>
-          <v-btn>Forfeit</v-btn>
-        </template>
-      </v-text-field>
+      <v-row>
+        <v-col cols="6">
+          <v-form @submit.prevent="message">
+            <v-text-field
+              :rules="rules"
+              autofocus
+              clearable
+              dense
+              hide-details="auto"
+              hint="Psst! match the beginning with the end."
+              label="Send a Word"
+            >
+              <template #append-outer>
+                <v-btn type="submit">Send</v-btn>
+                <v-btn>Forfeit</v-btn>
+              </template>
+            </v-text-field>
+          </v-form>
+        </v-col>
+      </v-row>
     </v-footer>
   </v-app>
 </template>
