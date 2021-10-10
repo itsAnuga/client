@@ -34,12 +34,13 @@
           shaped
         >
           <v-list-item-content>
-            <v-list-item-title
-              >{{ player.name
-              }}<span v-if="uuid() === player.uuid">
-                - you</span
-              ></v-list-item-title
-            >
+            <v-list-item-title>
+              <v-icon :style="`color:` + (player.online ? `green` : `red`)">
+                mdi-circle</v-icon
+              >
+              {{ player.name }}
+              <span v-if="uuid() === player.uuid"> - you </span>
+            </v-list-item-title>
             <v-list-item-subtitle>{{ player.uuid }}</v-list-item-subtitle>
           </v-list-item-content>
         </v-list-item>
@@ -56,8 +57,9 @@
     <v-footer app height="120" inset>
       <v-row>
         <v-col cols="6">
-          <v-form @submit.prevent="message">
+          <v-form @submit.prevent="send">
             <v-text-field
+              v-model="word"
               :rules="rules"
               autofocus
               clearable
@@ -107,6 +109,7 @@ export default {
         (value) => (value && !/ /.test(value)) || 'No spaces, just one word.',
       ],
       title: `The Game`,
+      word: null,
     };
   },
   computed: {
@@ -122,13 +125,14 @@ export default {
   beforeMount() {
     this.ws = new WebSocket(process.env.WS);
 
-    // this.ws.addEventListener('open', (event) => {});
-
-    this.ws.addEventListener('open', () => {
+    /**
+     * What happens on successfull connection.
+     */
+    this.ws.onopen = (event) => {
       this.ws.send(
         JSON.stringify({ data: { uuid: this.uuid() }, type: 'register' })
       );
-    });
+    };
 
     this.ws.onmessage = (event) => {
       const message = JSON.parse(event.data);
@@ -158,6 +162,10 @@ export default {
           this.$store.commit('player', message.data.player);
           break;
 
+        case `Won`:
+          this.$store.commit('add', message.data.message);
+          break;
+
         case `Word`:
           this.message({
             message: message.data.message,
@@ -165,22 +173,14 @@ export default {
           });
           break;
 
+        case `Words`:
+          this.$store.commit('set', message.data);
+          break;
+
         case `Victory`:
           break;
       }
     };
-
-    // this.ws.addEventListener('ping', (event) => {
-    //   // eslint-disable-next-line no-console
-    //   console.log(`Received a ping!`, event.data);
-    //   // this.ws.send()
-    // });
-
-    // this.ws.addEventListener('pong', (event) => {
-    //   // eslint-disable-next-line no-console
-    //   console.log(`Received a pong!`, event.data);
-    //   // this.message(event.data)
-    // });
   },
   methods: {
     cookie(name, value) {
@@ -194,21 +194,20 @@ export default {
       document.cookie = `${name}=${value};expires=${expires};`;
     },
     message(message) {
-      if (message.target !== undefined) {
-        this.$store.commit('add', {
-          message: message.target.value,
-          player: this.$store.state.player,
-        });
-        this.ws.send(
-          JSON.stringify({ data: message.target.value, type: 'word' })
-        );
-        message.target.value = '';
-      } else {
-        this.$store.commit('add', {
-          message: message.message,
-          player: message.player,
-        });
-      }
+      this.$store.commit('add', {
+        message: message.message,
+        player: message.player,
+      });
+    },
+    send() {
+      this.$store.commit('add', {
+        message: this.word,
+        player: this.$store.state.player,
+      });
+
+      this.ws.send(JSON.stringify({ data: this.word, type: 'word' }));
+
+      this.word = '';
     },
     uuid() {
       if (
@@ -216,10 +215,11 @@ export default {
           .split(';')
           .some((item) => item.trim().startsWith('uuid='))
       ) {
-        return document.cookie
+        const uuid = document.cookie
           .split('; ')
           .find((row) => row.startsWith('uuid='))
           .split('=')[1];
+        return uuid !== `` ? uuid : null;
       }
       return null;
     },

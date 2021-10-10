@@ -9,6 +9,9 @@ export const mutations = {
   add(state, message) {
     state.messages.push(message);
   },
+  set(state, messages) {
+    state.messages = messages;
+  },
   player(state, player) {
     state.player = player;
   },
