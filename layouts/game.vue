@@ -10,13 +10,7 @@
       mobile-breakpoint="0"
     >
       <v-list>
-        <v-list-item
-          v-for="(item, i) in items"
-          :key="i"
-          :href="item.to"
-          exact
-          nuxt
-        >
+        <v-list-item v-for="(item, i) in items" :key="i" :href="item.to" exact nuxt>
           <v-list-item-action>
             <v-icon>{{ item.icon }}</v-icon>
           </v-list-item-action>
@@ -26,23 +20,16 @@
         </v-list-item>
       </v-list>
       <v-list>
-        <v-list-item
-          v-for="player in players"
-          :key="player.uuid"
-          dense
-          exact
-          shaped
-        >
+        <v-list-item v-for="player in players" :key="player.uuid" dense exact shaped>
+          <v-icon :style="`color:` + (player.online ? `green` : `red`)">mdi-circle</v-icon>
           <v-list-item-content>
             <v-list-item-title>
-              <v-icon :style="`color:` + (player.online ? `green` : `red`)">
-                mdi-circle</v-icon
-              >
               {{ player.name }}
               <span v-if="uuid() === player.uuid"> - you </span>
             </v-list-item-title>
             <v-list-item-subtitle>{{ player.uuid }}</v-list-item-subtitle>
           </v-list-item-content>
+          <v-icon v-if="player.turn">mdi-less-than</v-icon>
         </v-list-item>
       </v-list>
     </v-navigation-drawer>
@@ -56,7 +43,7 @@
     </v-main>
     <v-footer app height="120" inset>
       <v-row>
-        <v-col cols="6">
+        <v-col>
           <v-form @submit.prevent="send">
             <v-text-field
               v-model="word"
@@ -129,9 +116,7 @@ export default {
      * What happens on successfull connection.
      */
     this.ws.onopen = (event) => {
-      this.ws.send(
-        JSON.stringify({ data: { uuid: this.uuid() }, type: 'register' })
-      );
+      this.ws.send(JSON.stringify({ data: { uuid: this.uuid() }, type: 'register' }));
     };
 
     this.ws.onmessage = (event) => {
@@ -189,8 +174,7 @@ export default {
   methods: {
     cookie(name, value) {
       const date = new Date();
-      const time =
-        date.getTime() + 1 * 24 * 60 * 60 * 1000 * (value === `` ? -1 : 1);
+      const time = date.getTime() + 1 * 24 * 60 * 60 * 1000 * (value === `` ? -1 : 1);
 
       date.setTime(time);
 
@@ -218,11 +202,7 @@ export default {
       this.word = '';
     },
     uuid() {
-      if (
-        document.cookie
-          .split(';')
-          .some((item) => item.trim().startsWith('uuid='))
-      ) {
+      if (document.cookie.split(';').some((item) => item.trim().startsWith('uuid='))) {
         const uuid = document.cookie
           .split('; ')
           .find((row) => row.startsWith('uuid='))
