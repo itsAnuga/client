@@ -70,7 +70,7 @@
             >
               <template #append-outer>
                 <v-btn type="submit">Send</v-btn>
-                <v-btn>Forfeit</v-btn>
+                <v-btn @click.prevent="forfeit">Forfeit</v-btn>
               </template>
             </v-text-field>
           </v-form>
@@ -154,6 +154,10 @@ export default {
           this.cookie(`uuid`, ``);
           break;
 
+        case `NotYourTurn`:
+          this.$store.commit('add', message.data.message);
+          break;
+
         case `UserInfo`:
           if (this.uuid() === null) {
             this.cookie(`uuid`, message.data.uuid);
@@ -185,13 +189,17 @@ export default {
   methods: {
     cookie(name, value) {
       const date = new Date();
-      const time = date.getTime() + 1 * 24 * 60 * 60 * 1000;
+      const time =
+        date.getTime() + 1 * 24 * 60 * 60 * 1000 * (value === `` ? -1 : 1);
 
       date.setTime(time);
 
       const expires = date.toUTCString();
 
       document.cookie = `${name}=${value};expires=${expires};`;
+    },
+    forfeit() {
+      this.ws.send(JSON.stringify({ type: 'forfeit' }));
     },
     message(message) {
       this.$store.commit('add', {
